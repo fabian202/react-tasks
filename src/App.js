@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import  { todos } from './data/todos.json';
+console.log(todos);
+
 class App extends Component {
   render() {
     return (

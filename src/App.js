@@ -3,10 +3,59 @@ import logo from './logo.svg';
 import './App.css';
 
 import  { todos } from './data/todos.json';
-console.log(todos);
+import TodoForm from './components/TodoForm';
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      todos
+    }
+    this.handleAddTodo = this.handleAddTodo.bind(this);
+  }
+
+  handleRemoveTodo(index) {
+    this.setState({
+      todos: this.state.todos.filter((e, i) => {
+        return i !== index
+      })
+    });
+  }
+
+  handleAddTodo(todo) {
+    this.setState({
+      todos: [...this.state.todos, todo]
+    })
+  }
+
   render() {
+
+  const todos = this.state.todos.map((todo, i) => {
+    return (
+      <div className="col-md-4" key={i} >
+        <div className="card mt-4" >
+          <div className="card-title text-center">
+            <h3>{ todo.title }</h3>
+          </div>
+          <div className="card-body">
+            { todo.description }
+          </div>
+          <div className="card-footer">
+          <button title="Termiar"
+              className="btn btn-success mr-1" onClick={this.handleRemoveTodo.bind(this, i)}>
+              <span className="oi oi-check" title="icon name" aria-hidden="true"></span>
+            </button>
+            <button title="Eliminar"
+              className="btn btn-danger" onClick={this.handleRemoveTodo.bind(this, i)}>
+              <span className="oi oi-ban" title="icon name" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  });
+
     return (
       <div className="App">
 
@@ -14,7 +63,7 @@ class App extends Component {
           <a className="navbar-brand" href="/">
             Tasks
             <span className="badge badge-pill badge-light ml-2">
-              
+              { this.state.todos.length }
             </span>
           </a>
         </nav>
@@ -23,30 +72,13 @@ class App extends Component {
           <div className="row mt-4">
 
             <div className="col-md-4 text-center">
+                <TodoForm onAddTodo={this.handleAddTodo}></TodoForm>
                 <img src={logo} className="App-logo" alt="logo" />
             </div>
 
             <div className="col-md-8">
               <div className="row">
-                <div className="col-md-4">
-                  <div className="card mt-4">
-                    <div className="card-title text-center">
-                      <h3>Título</h3>
-                      <span className="badge badge-pill badge-danger ml-2">
-                        terminada?
-                      </span>
-                    </div>
-                    <div className="card-body">
-                      descripción
-                    </div>
-                    <div className="card-footer">
-                      <button
-                        className="btn btn-danger">
-                        Eliminar
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                 { todos }
               </div>
             </div>
           </div>
